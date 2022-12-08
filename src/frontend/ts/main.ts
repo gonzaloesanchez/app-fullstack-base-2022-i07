@@ -42,9 +42,12 @@ class Main implements EventListenerObject, HandleResponse{
                 grilla+=`<img src="static/images/window.png" alt="" class="circle"> `  
             }
             
-            grilla += ` <span class="title negrita">${disp.name}</span>
+            grilla += ` <span class="title negrita">${disp.name}
+            <a class="btn-flat inline"><i class="material-icons center">cancel</i></a>
+            </span>
             <p>${disp.description}
             </p>
+
             <a href="#!" class="secondary-content">
               <div class="switch">
                   <label>
@@ -83,14 +86,14 @@ class Main implements EventListenerObject, HandleResponse{
         let objEvento: HTMLElement;
         objEvento = <HTMLElement>object.target;
         
-        if (objEvento.id == "btnOtro") {
+        if (objEvento.id == "btnAgregar") {
             console.log(objEvento.id, objEvento.textContent);
             
             let iNombre = <HTMLInputElement>document.getElementById("iNombre");
             
             objEvento.textContent = iNombre.value;
             alert("hola " + this.personas[0].getNombre() + " estoy en el main");
-        } else if (objEvento.id == "btnSaludar") {
+        } else if (objEvento.id == "btnReload") {
           
             this.framework.mostrarCargando();
             this.cosultarDispositivoAlServidor();
@@ -142,9 +145,9 @@ window.addEventListener("load", () => {
     let main: Main = new Main(per1);
     main.addPersona(new Persona("Pepe"));
     mostrar(main);
-    let btn = document.getElementById("btnSaludar");
+    let btn = document.getElementById("btnReload");
     btn.addEventListener("click", main);
-    let btn2 = document.getElementById("btnOtro");
+    let btn2 = document.getElementById("btnAgregar");
     btn2.addEventListener("click", main);
     let btnAdd = document.getElementById("btnAdd");
     btnAdd.addEventListener("click", main);

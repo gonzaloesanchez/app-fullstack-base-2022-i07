@@ -26,3 +26,7 @@ span.negrita{
     color: brown;
     background-color: brown;
 }
+
+.inline  {
+    position: inline-block;
+}
