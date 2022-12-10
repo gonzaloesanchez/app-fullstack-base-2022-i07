@@ -1,6 +1,6 @@
 class Framework{
 
-  public ejecutarRequest(metodo: string, url: string, responseHandler:HandleResponse, data?: any) {
+  public request(metodo: string, url: string, responseHandler:HandleResponse, data?: any) {
     let xmlHttp = new XMLHttpRequest();
     
     xmlHttp.onreadystatechange = () => {
@@ -10,7 +10,7 @@ class Framework{
               let listaDisp: Array<Device> = JSON.parse(xmlHttp.responseText);
               //workaround for responses
               if (listaDisp["status"] == undefined)  {
-                responseHandler.cargarGrilla(listaDisp);
+                responseHandler.loadItems(listaDisp);
               }
                
             } else {
@@ -28,14 +28,5 @@ class Framework{
       
       xmlHttp.send();
     }
-  }
-
-  public mostrarCargando() {
-    let imgLoading = document.getElementById("loading");
-    imgLoading.hidden = false;
-  }
-  public ocultarCargando() {
-    let imgLoading = document.getElementById("loading");
-    imgLoading.hidden = true;
   }
 }

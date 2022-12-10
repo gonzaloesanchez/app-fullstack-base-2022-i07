@@ -16,29 +16,30 @@ class Main implements EventListenerObject, HandleResponse{
         return this.personas;
     }
 
-    cosultarDispositivoAlServidor() {
-
-        this.framework.ejecutarRequest("GET", "http://localhost:8000/devices",this);
+    getAllDevices() {
+        this.framework.request("GET", "http://localhost:8000/devices",this);
     }
 
 
-    cambiarEstadoDispositivoAlServidor() {
-        let json = { id: 1, state: 0 };
-        this.framework.ejecutarRequest("POST", "http://localhost:8000/deviceChange",this,json);
+    updateDeviceState(device_id: Number, state:Number) {
+        let json = { id: device_id,newState:state};
+        
+        
+        this.framework.request("POST", "http://localhost:8000/deviceChange",this,json);
         
     }
 
-    agregarDispositivoAlServidor(new_device: any) {
-        this.framework.ejecutarRequest("POST", "http://localhost:8000/deviceAdd",this,new_device);
+    addDevice(new_device: any) {
+        this.framework.request("POST", "http://localhost:8000/deviceAdd",this,new_device);
     }
 
-    eliminarDispositivoDelServidor(device_id: number) {
-        let json = { id: device_id, action: "delete" };
-        this.framework.ejecutarRequest("POST", "http://localhost:8000/deviceChange",this,json);
+    removeDevice(device_id: number) {
+        let json = { id: device_id };
+        this.framework.request("POST", "http://localhost:8000/deviceDelete",this,json);
         
     }
 
-    cargarGrilla(listaDisp: Array<Device>) {
+    loadItems(listaDisp: Array<Device>) {
         console.log("llego info del servidor", listaDisp);    
         let cajaDips = document.getElementById("cajaDisp");
         let grilla:string = "<ul class='collection'>";
@@ -89,8 +90,6 @@ class Main implements EventListenerObject, HandleResponse{
             cb.addEventListener("click", this);
             btnDelete.addEventListener("click", this);
         }
-
-        this.framework.ocultarCargando();
     }
 
     handleEvent(object: Event): void {
@@ -101,26 +100,23 @@ class Main implements EventListenerObject, HandleResponse{
         objEvento = <HTMLElement>object.target;
         
          if (objEvento.id == "btnReload") {
-          
-            this.framework.mostrarCargando();
-            this.cosultarDispositivoAlServidor();
+            this.getAllDevices();
 
       
         } else if (objEvento.id.startsWith("cb_")) {
             let idDisp = objEvento.id.substring(3);
             
-            
-            alert("Se cambio el estado del dispositivo " + idDisp + " -" + (<HTMLInputElement>objEvento).checked);
-
+            this.updateDeviceState(parseInt(idDisp),(<HTMLInputElement>objEvento).checked ? 1 : 0);
+            console.log("Dispositivo " + idDisp + " actualizado");
        
             
         } else if (objEvento.id.startsWith("btnDelete_")) {
             let idDisp = objEvento.id.substring(10);
 
             if (confirm("Se desea eliminar el dispositivo " + idDisp + ". " + "Esta seguro de continuar?")) {
-                this.eliminarDispositivoDelServidor(parseInt(idDisp));
+                this.removeDevice(parseInt(idDisp));
                 console.log("Dispositivo " + idDisp + " eliminado");
-                this.cosultarDispositivoAlServidor();
+                this.getAllDevices();
             } else {
                 console.log('Accion cancelada');
             }
@@ -149,8 +145,8 @@ class Main implements EventListenerObject, HandleResponse{
                 newDevice["type"] = 2;
             }
 
-            this.agregarDispositivoAlServidor(newDevice);
-            this.cosultarDispositivoAlServidor();
+            this.addDevice(newDevice);
+            this.getAllDevices();
         }
 
     }

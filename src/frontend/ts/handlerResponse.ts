@@ -1,3 +1,3 @@
 interface HandleResponse{
-  cargarGrilla(listaDisp: Array<Device>);
+  loadItems(listaDisp: Array<Device>);
 }

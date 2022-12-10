@@ -15,16 +15,19 @@ app.use(express.static('/home/node/app/static/'));
 //=======[ Main module code ]==================================================
 
 app.get('/devices/', function(req, res, next) {
-
-    setTimeout(()=>{
-        res.send(JSON.stringify(devices)).status(200);
-    },500);
+    res.send(JSON.stringify(devices)).status(200);
 });
 
-app.post('/deviceChange', function(req, res, next) {
+app.get('/devices/:id', function(req, res, next) {
+    var index = devices.findIndex(devices => devices.id == dev["id"]);
+
+    res.send(JSON.stringify(devices[index])).status(200);
+});
+
+app.post('/deviceDelete', function(req, res, next) {
     let dev = req.body;
 
-    if (dev["action"] === "delete" && dev["id"] > 0)  {
+    if (dev["id"] > 0)  {
         
         var index = devices.findIndex(devices => devices.id == dev["id"]);
         console.log("Index " + index);
@@ -35,8 +38,6 @@ app.post('/deviceChange', function(req, res, next) {
     else {
         res.send('{"status": "Error"}').status(501);
     }
-    //res.end();
-    
    
 });
 
@@ -58,11 +59,24 @@ app.post('/deviceAdd', function(req, res, next) {
         console.log("Error getting the last object of database");
         res.send('{"status": "Error"}').status(501);
     }
-
-    res.end();
-   
 });
 
+app.post('/deviceChange', function(req, res, next) {
+    let dev = req.body;
+
+    if (dev["id"] > 0)  {
+        
+        var index = devices.findIndex(devices => devices.id == dev["id"]);
+        console.log("Index " + index);
+        devices[index].state = dev["newState"]
+        console.log("Actualizado dispositivo " + dev["id"]);
+        res.send('{"status": "OK"}').status(200);
+    }
+    else {
+        res.send('{"status": "Error"}').status(501);
+    }
+   
+});
 app.listen(PORT, function(req, res) {
     console.log("NodeJS API running correctly");
 });
