@@ -100,16 +100,7 @@ class Main implements EventListenerObject, HandleResponse{
         let objEvento: HTMLElement;
         objEvento = <HTMLElement>object.target;
         
-        if (objEvento.id == "btnAgregar") {
-            console.log(objEvento.id, objEvento.textContent);
-            
-            let newDevice = JSON.parse('{"id": 0, "name": "Gonza", "description": "Dispositivo desconocido", "state": 0, "type": 0}');
-
-            this.agregarDispositivoAlServidor(newDevice);
-            this.cosultarDispositivoAlServidor();
-            
-            
-        } else if (objEvento.id == "btnReload") {
+         if (objEvento.id == "btnReload") {
           
             this.framework.mostrarCargando();
             this.cosultarDispositivoAlServidor();
@@ -135,23 +126,31 @@ class Main implements EventListenerObject, HandleResponse{
             }
         }
         
-        else {
-            objEvento = <HTMLElement>objEvento.parentElement;
-        
-            if (objEvento.id == "btnAdd") {
-                M.toast({html: 'Se agrego', classes: 'rounded'});
-                let elementoTxtNombre = <HTMLInputElement>document.getElementById("txtNombre");
-                
-                console.log(elementoTxtNombre.value);
-                let elementoSelectColor = <HTMLSelectElement>document.getElementById("selectColores");
-                var instance = M.FormSelect.getInstance(elementoSelectColor);
-                console.log(instance.getSelectedValues())
+        else if(objEvento.id == "btnInsert"){
+            let objModal = document.getElementById("addPopup");
+            let newDevice = JSON.parse('{"id": 0, "name": " ", "description": " ", "state": 0, "type": 0}');
 
-
-
-
+            newDevice["name"] = (<HTMLInputElement>objModal.querySelector("#txtNombre")).value;
+            newDevice["description"] = (<HTMLInputElement>objModal.querySelector("#txtDesc")).value;
+            if ((<HTMLInputElement>objModal.querySelector("#newDeviceState")).checked) {
+                newDevice["state"] = 1;
             }
-            
+            else {
+                newDevice["state"] = 0;
+            }
+
+            if ((<HTMLInputElement>objModal.querySelector('#tipoLampara')).checked)  {
+                newDevice["type"] = 1;
+            }
+            else if((<HTMLInputElement>objModal.querySelector('#tipoGenerico')).checked) {
+                newDevice["type"] = 0;
+            }
+            else {
+                newDevice["type"] = 2;
+            }
+
+            this.agregarDispositivoAlServidor(newDevice);
+            this.cosultarDispositivoAlServidor();
         }
 
     }
@@ -175,12 +174,8 @@ window.addEventListener("load", () => {
     mostrar(main);
     let btn = document.getElementById("btnReload");
     btn.addEventListener("click", main);
-    let btn2 = document.getElementById("btnAgregar");
-    btn2.addEventListener("click", main);
-    let btnAdd = document.getElementById("btnAdd");
-    btnAdd.addEventListener("click", main);
-    console.log(btnAdd);
-    
+    let btnInsert = document.getElementById("btnInsert");
+    btnInsert.addEventListener("click", main); 
 });
 
 

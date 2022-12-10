@@ -46,7 +46,7 @@
                       
                     </div>
                     <div class="col s12 xl3">
-                        <button class="btn waves-effect waves-light button-view" id="btnAgregar" name="add_device">Agregar Dispositivo</button>
+                        <button class="btn waves-effect waves-light button-view modal-trigger" id="btnAgregar" name="add_device" href="#addPopup">Agregar Dispositivo</button>
                     </div>
                 </div>
             </div>	
@@ -71,13 +71,7 @@
         <div id="modalAlta" class="modal">
             <div class="modal-content">
                 <div class="row">
-                    <div class="input-field col s6">
-                        <select multiple id="selectColores">
-                          <option value="" disabled selected>Seleccione</option>
-                          <option value="rojo">Rojo</option>
-                          <option value="verde">Verde</option>
-                          <option value="azul">Azul</option>
-                        </select>
+                    
                         <label>Color de luz</label>
                       </div>
                       <div class="input-field col s6">
@@ -88,11 +82,49 @@
                    
                 </div>
             </div>
-            <div class="modal-footer">
-                <a id="btnAdd" class="btn-floating btn-large waves-effect waves-light red">
-                    <i class="material-icons">add</i>
-                </a>
+
+            <!-- Modal Structure -->
+            <div id="addPopup" class="modal">
+                <div class="modal-content">
+                    <h4>Agregar un dispositivo</h4>
+                    <div class="input-field col s6">
+                        <input id="txtNombre" type="text" class="validate"><label for="txtNombre">Nombre</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <input id="txtDesc" type="text" class="validate"><label for="txtDesc">Descripcion</label>
+                    </div>
+                
+                
+                    <!-- Estado -->
+                    <div class="switch">
+                        <label>
+                        Off
+                        <input type="checkbox" id="newDeviceState">
+                        <span class="lever"></span>
+                        On
+                        </label>
+                    </div>
+
+                    <h6>Tipo de dispositivo</h6>
+                    <p>
+                        <label>
+                            <input name="group1" type="radio" id="tipoLampara" checked />
+                            <span>Lámpara</span>
+                        </label>
+                    </p>
+                    <p>
+                        <label>
+                            <input name="group1" type="radio" id="tipoGenerico"/>
+                            <span>Genérico</span>
+                        </label>
+                    </p>
+                    <button class="btn waves-effect waves-light modal-close" name="action" id="btnInsert">Agregar
+                        <i class="material-icons right">send</i>
+                    </button>
+                </div>
+                    
             </div>
-          </div>
-    </body>
-  </html>
+        </div>
+    </div>
+</body>
+</html>
