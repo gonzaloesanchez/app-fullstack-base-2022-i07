@@ -27,6 +27,17 @@ class Main implements EventListenerObject, HandleResponse{
         this.framework.ejecutarRequest("POST", "http://localhost:8000/deviceChange",this,json);
         
     }
+
+    agregarDispositivoAlServidor(new_device: any) {
+        this.framework.ejecutarRequest("POST", "http://localhost:8000/deviceAdd",this,new_device);
+    }
+
+    eliminarDispositivoDelServidor(device_id: number) {
+        let json = { id: device_id, action: "delete" };
+        this.framework.ejecutarRequest("POST", "http://localhost:8000/deviceChange",this,json);
+        
+    }
+
     cargarGrilla(listaDisp: Array<Device>) {
         console.log("llego info del servidor", listaDisp);    
         let cajaDips = document.getElementById("cajaDisp");
@@ -43,10 +54,12 @@ class Main implements EventListenerObject, HandleResponse{
             }
             
             grilla += ` <span class="title negrita">${disp.name}
-            <a class="btn-flat inline"><i class="material-icons center">cancel</i></a>
             </span>
             <p>${disp.description}
             </p>
+            <a class="waves-effect waves-teal btn-flat" id="btnDelete_${disp.id}">
+                <i class="material-icons left">cancel</i>Eliminar
+            </a>
 
             <a href="#!" class="secondary-content">
               <div class="switch">
@@ -72,11 +85,12 @@ class Main implements EventListenerObject, HandleResponse{
 
         for (let disp of listaDisp) {
             let cb = document.getElementById("cb_" + disp.id);
+            let btnDelete = document.getElementById("btnDelete_" + disp.id);
             cb.addEventListener("click", this);
+            btnDelete.addEventListener("click", this);
         }
-        
+
         this.framework.ocultarCargando();
-        
     }
 
     handleEvent(object: Event): void {
@@ -89,10 +103,12 @@ class Main implements EventListenerObject, HandleResponse{
         if (objEvento.id == "btnAgregar") {
             console.log(objEvento.id, objEvento.textContent);
             
-            let iNombre = <HTMLInputElement>document.getElementById("iNombre");
+            let newDevice = JSON.parse('{"id": 0, "name": "Gonza", "description": "Dispositivo desconocido", "state": 0, "type": 0}');
+
+            this.agregarDispositivoAlServidor(newDevice);
+            this.cosultarDispositivoAlServidor();
             
-            objEvento.textContent = iNombre.value;
-            alert("hola " + this.personas[0].getNombre() + " estoy en el main");
+            
         } else if (objEvento.id == "btnReload") {
           
             this.framework.mostrarCargando();
@@ -107,7 +123,19 @@ class Main implements EventListenerObject, HandleResponse{
 
        
             
-        } else {
+        } else if (objEvento.id.startsWith("btnDelete_")) {
+            let idDisp = objEvento.id.substring(10);
+
+            if (confirm("Se desea eliminar el dispositivo " + idDisp + ". " + "Esta seguro de continuar?")) {
+                this.eliminarDispositivoDelServidor(parseInt(idDisp));
+                console.log("Dispositivo " + idDisp + " eliminado");
+                this.cosultarDispositivoAlServidor();
+            } else {
+                console.log('Accion cancelada');
+            }
+        }
+        
+        else {
             objEvento = <HTMLElement>objEvento.parentElement;
         
             if (objEvento.id == "btnAdd") {

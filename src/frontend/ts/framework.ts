@@ -8,7 +8,10 @@ class Framework{
           
             if (xmlHttp.status == 200) {
               let listaDisp: Array<Device> = JSON.parse(xmlHttp.responseText);
-              responseHandler.cargarGrilla(listaDisp);
+              //workaround for responses
+              if (listaDisp["status"] == undefined)  {
+                responseHandler.cargarGrilla(listaDisp);
+              }
                
             } else {
                 alert("ERROR en la consulta");

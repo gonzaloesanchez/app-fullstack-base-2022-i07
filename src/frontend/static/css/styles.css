@@ -27,6 +27,7 @@ span.negrita{
     background-color: brown;
 }
 
-.inline  {
-    position: inline-block;
+.right-aligned {
+    position: relative;
+    margin-left: 84%;
 }
