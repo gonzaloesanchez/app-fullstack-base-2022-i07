@@ -3,28 +3,19 @@ declare const M;
 class Main implements EventListenerObject, HandleResponse{
  
     private framework: Framework = new Framework();
-    private personas: Array<Persona> =new Array();
-    constructor(per:Persona) {
-        this.personas.push(per);
-
-        console.log(this);
-    }
-    public addPersona(per: Persona) {
-        this.personas.push(per);
-    }
-    public getPersona(){
-        return this.personas;
-    }
 
     getAllDevices() {
         this.framework.request("GET", "http://localhost:8000/devices",this);
     }
 
+    getDeviceById(device_id: Number,formObject: any) {
+        this.framework.request("GET", "http://localhost:8000/device/" + device_id,this,formObject);
+    }
+
 
     updateDeviceState(device_id: Number, state:Number) {
         let json = { id: device_id,newState:state};
-        
-        
+
         this.framework.request("POST", "http://localhost:8000/deviceChange",this,json);
         
     }
@@ -39,8 +30,8 @@ class Main implements EventListenerObject, HandleResponse{
         
     }
 
-    loadItems(listaDisp: Array<Device>) {
-        console.log("llego info del servidor", listaDisp);    
+    drawItems(listaDisp: Array<Device>) {
+            
         let cajaDips = document.getElementById("cajaDisp");
         let grilla:string = "<ul class='collection'>";
         for (let disp of listaDisp) {
@@ -48,7 +39,7 @@ class Main implements EventListenerObject, HandleResponse{
 
             grilla += ` <li class="collection-item avatar">`;
             
-            if (disp.type == 1) {
+            if (disp.type == 0) {
                 grilla+=`<img src="static/images/lightbulb.png" alt="" class="circle"> `   
             } else {
                 grilla+=`<img src="static/images/window.png" alt="" class="circle"> `  
@@ -58,6 +49,9 @@ class Main implements EventListenerObject, HandleResponse{
             </span>
             <p>${disp.description}
             </p>
+            <a class="waves-effect waves-teal btn-flat modal-trigger" id="btnChange_${disp.id}" href="#addChange">
+                <i class="material-icons left">create</i>Editar
+            </a>
             <a class="waves-effect waves-teal btn-flat" id="btnDelete_${disp.id}">
                 <i class="material-icons left">cancel</i>Eliminar
             </a>
@@ -86,9 +80,11 @@ class Main implements EventListenerObject, HandleResponse{
 
         for (let disp of listaDisp) {
             let cb = document.getElementById("cb_" + disp.id);
-            let btnDelete = document.getElementById("btnDelete_" + disp.id);
+            let btnDeleteGrid = document.getElementById("btnDelete_" + disp.id);
+            let btnChangeGrid = document.getElementById("btnChange_" + disp.id);
             cb.addEventListener("click", this);
-            btnDelete.addEventListener("click", this);
+            btnDeleteGrid.addEventListener("click", this);
+            btnChangeGrid.addEventListener("click", this);
         }
     }
 
@@ -120,6 +116,12 @@ class Main implements EventListenerObject, HandleResponse{
             } else {
                 console.log('Accion cancelada');
             }
+        }
+
+        else if (objEvento.id.startsWith("btnChange_")) {
+            let idDisp = objEvento.id.substring(10);
+            let objModal = document.getElementById("addChange");
+            this.getDeviceById(parseInt(idDisp),objModal);
         }
         
         else if(objEvento.id == "btnInsert"){
@@ -162,27 +164,11 @@ window.addEventListener("load", () => {
     var elemsM = document.querySelectorAll('.modal');
     var instances = M.Modal.init(elemsM, "");
 
-    let user: Usuario = new Usuario("Juan","jperez","jperez@gmail.com");
-    let per1 = new Persona("Matias")
-    per1.edad = 12;
-    let main: Main = new Main(per1);
-    main.addPersona(new Persona("Pepe"));
-    mostrar(main);
+    let main: Main = new Main();
+
     let btn = document.getElementById("btnReload");
     btn.addEventListener("click", main);
     let btnInsert = document.getElementById("btnInsert");
     btnInsert.addEventListener("click", main); 
 });
-
-
-function mostrar(main: Main) {
-    let personas = main.getPersona();
-    let datosPersonas = "";
-    for (let i in personas) {
-        datosPersonas = datosPersonas + personas[i].toString();
-        
-    }
-
-
-}
 

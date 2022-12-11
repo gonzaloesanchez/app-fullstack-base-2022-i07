@@ -18,8 +18,9 @@ app.get('/devices/', function(req, res, next) {
     res.send(JSON.stringify(devices)).status(200);
 });
 
-app.get('/devices/:id', function(req, res, next) {
-    var index = devices.findIndex(devices => devices.id == dev["id"]);
+app.get('/device/:id', function(req, res, next) {
+    const id = req.params.id;
+    var index = devices.findIndex(devices => devices.id == id);
 
     res.send(JSON.stringify(devices[index])).status(200);
 });

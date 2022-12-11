@@ -68,62 +68,80 @@
 		<!--JavaScript at end of body for optimized loading-->
 	
 
-        <div id="modalAlta" class="modal">
+        <!-- Modal Structure -->
+        <div id="addPopup" class="modal">
             <div class="modal-content">
-                <div class="row">
-                    
-                        <label>Color de luz</label>
-                      </div>
-                      <div class="input-field col s6">
-                        <input id="txtNombre" type="text" class="validate">
-                        <label for="txtNombre">Nombre</label>
-                      </div>
-
-                   
+                <h4>Agregar un dispositivo</h4>
+                <div class="input-field col s6">
+                    <input id="txtNombre" type="text" class="validate"><label for="txtNombre">Nombre</label>
                 </div>
-            </div>
-
-            <!-- Modal Structure -->
-            <div id="addPopup" class="modal">
-                <div class="modal-content">
-                    <h4>Agregar un dispositivo</h4>
-                    <div class="input-field col s6">
-                        <input id="txtNombre" type="text" class="validate"><label for="txtNombre">Nombre</label>
-                    </div>
-                    <div class="input-field col s6">
-                        <input id="txtDesc" type="text" class="validate"><label for="txtDesc">Descripcion</label>
-                    </div>
-                
-                
-                    <!-- Estado -->
-                    <div class="switch">
-                        <label>
-                        Off
-                        <input type="checkbox" id="newDeviceState">
-                        <span class="lever"></span>
-                        On
-                        </label>
-                    </div>
-
-                    <h6>Tipo de dispositivo</h6>
-                    <p>
-                        <label>
-                            <input name="group1" type="radio" id="tipoLampara" checked />
-                            <span>Lámpara</span>
-                        </label>
-                    </p>
-                    <p>
-                        <label>
-                            <input name="group1" type="radio" id="tipoGenerico"/>
-                            <span>Genérico</span>
-                        </label>
-                    </p>
-                    <button class="btn waves-effect waves-light modal-close" name="action" id="btnInsert">Agregar
-                        <i class="material-icons right">send</i>
-                    </button>
+                <div class="input-field col s6">
+                    <input id="txtDesc" type="text" class="validate"><label for="txtDesc">Descripcion</label>
                 </div>
-                    
+            
+            
+                <!-- Estado -->
+                <div class="switch">
+                    <label>
+                    Off
+                    <input type="checkbox" id="newDeviceState">
+                    <span class="lever"></span>
+                    On
+                    </label>
+                </div>
+
+                <h6>Tipo de dispositivo</h6>
+                <p>
+                    <label>
+                        <input name="group1" type="radio" id="tipoLampara" checked />
+                        <span>Lámpara</span>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input name="group1" type="radio" id="tipoGenerico"/>
+                        <span>Genérico</span>
+                    </label>
+                </p>
+                <button class="btn waves-effect waves-light modal-close" name="action" id="btnInsert">Agregar
+                    <i class="material-icons right">send</i>
+                </button>
             </div>
+                
+        </div>
+
+
+
+        <!-- Modal Structure -->
+        <div id="addChange" class="modal">
+            <div class="modal-content">
+                <h4>Editar un dispositivo</h4>
+                <div class="input-field col s6">
+                    <input id="chgNombre" type="text" class="validate"><label for="txtNombre">Nombre</label>
+                </div>
+                <div class="input-field col s6">
+                    <input id="chgDesc" type="text" class="validate"><label for="txtDesc">Descripcion</label>
+                </div>
+
+                <h6>Tipo de dispositivo</h6>
+                <p>
+                    <label>
+                        <input name="group2" type="radio" id="chgtipoLampara" checked />
+                        <span>Lámpara</span>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input name="group2" type="radio" id="chgtipoGenerico"/>
+                        <span>Genérico</span>
+                    </label>
+                </p>
+                <button class="btn waves-effect waves-light modal-close" name="action" id="btnChange">Aceptar
+                    <i class="material-icons right">send</i>
+                </button>
+            </div>
+                
+        </div>
         </div>
     </div>
 </body>

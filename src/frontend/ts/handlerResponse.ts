@@ -1,3 +1,3 @@
 interface HandleResponse{
-  loadItems(listaDisp: Array<Device>);
+  drawItems(listaDisp: Array<Device>);
 }
