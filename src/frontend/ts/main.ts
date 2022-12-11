@@ -3,6 +3,7 @@ declare const M;
 class Main implements EventListenerObject, HandleResponse{
  
     private framework: Framework = new Framework();
+    private id:number = 0;
 
     getAllDevices() {
         this.framework.request("GET", "http://localhost:8000/devices",this);
@@ -18,6 +19,10 @@ class Main implements EventListenerObject, HandleResponse{
 
         this.framework.request("POST", "http://localhost:8000/deviceChange",this,json);
         
+    }
+
+    updateDevice(device_id:number,updates: any)  {
+        this.framework.request("POST", "http://localhost:8000/deviceChange/" + device_id,this,updates);
     }
 
     addDevice(new_device: any) {
@@ -122,6 +127,7 @@ class Main implements EventListenerObject, HandleResponse{
             let idDisp = objEvento.id.substring(10);
             let objModal = document.getElementById("addChange");
             this.getDeviceById(parseInt(idDisp),objModal);
+            this.id = parseInt(idDisp);
         }
         
         else if(objEvento.id == "btnInsert"){
@@ -151,6 +157,25 @@ class Main implements EventListenerObject, HandleResponse{
             this.getAllDevices();
         }
 
+        else if(objEvento.id == "btnChange"){
+            let objModal = document.getElementById("addChange");
+            let chgDevice = JSON.parse('{"name": " ", "description": " ", "type": 0}');
+
+            
+            chgDevice["name"] = (<HTMLInputElement>objModal.querySelector("#chgNombre")).value;
+            chgDevice["description"] = (<HTMLInputElement>objModal.querySelector("#chgDesc")).value;
+ 
+
+            if ((<HTMLInputElement>objModal.querySelector('#chgtipoLampara')).checked)  {
+                chgDevice["type"] = 0;
+            }
+            else if((<HTMLInputElement>objModal.querySelector('#chgtipoGenerico')).checked) {
+                chgDevice["type"] = 1;
+            }
+            this.updateDevice(this.id,chgDevice);
+            this.getAllDevices();
+        }
+
     }
 }
 
@@ -169,6 +194,8 @@ window.addEventListener("load", () => {
     let btn = document.getElementById("btnReload");
     btn.addEventListener("click", main);
     let btnInsert = document.getElementById("btnInsert");
-    btnInsert.addEventListener("click", main); 
+    btnInsert.addEventListener("click", main);
+    let btnChange = document.getElementById("btnChange");
+    btnChange.addEventListener("click", main); 
 });
 

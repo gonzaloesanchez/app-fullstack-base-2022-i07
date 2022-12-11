@@ -69,7 +69,9 @@ app.post('/deviceChange', function(req, res, next) {
         
         var index = devices.findIndex(devices => devices.id == dev["id"]);
         console.log("Index " + index);
-        devices[index].state = dev["newState"]
+
+        devices[index].state = dev["newState"];
+
         console.log("Actualizado dispositivo " + dev["id"]);
         res.send('{"status": "OK"}').status(200);
     }
@@ -78,6 +80,24 @@ app.post('/deviceChange', function(req, res, next) {
     }
    
 });
+
+app.post('/deviceChange/:id', function(req, res, next) {
+    let dev = req.body;
+    const id = req.params.id;
+    var index = devices.findIndex(devices => devices.id == id);
+
+    console.log("Index " + index);
+    console.log(dev);
+
+    devices[index].name = dev.name;
+    devices[index].description = dev.description;
+    devices[index].type = dev.type;
+
+    console.log("Actualizado dispositivo " + id);
+    res.send('{"status": "OK"}').status(200);
+   
+});
+
 app.listen(PORT, function(req, res) {
     console.log("NodeJS API running correctly");
 });
