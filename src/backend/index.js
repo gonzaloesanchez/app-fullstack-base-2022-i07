@@ -62,6 +62,9 @@ app.post('/deviceAdd', function(req, res, next) {
     }
 });
 
+/* 
+    Only used for change state on devices
+*/
 app.post('/deviceChange', function(req, res, next) {
     let dev = req.body;
 
@@ -81,6 +84,9 @@ app.post('/deviceChange', function(req, res, next) {
    
 });
 
+/*
+        Only used for editing a devices
+*/
 app.post('/deviceChange/:id', function(req, res, next) {
     let dev = req.body;
     const id = req.params.id;

@@ -16,9 +16,7 @@ class Main implements EventListenerObject, HandleResponse{
 
     updateDeviceState(device_id: Number, state:Number) {
         let json = { id: device_id,newState:state};
-
         this.framework.request("POST", "http://localhost:8000/deviceChange",this,json);
-        
     }
 
     updateDevice(device_id:number,updates: any)  {
@@ -32,7 +30,6 @@ class Main implements EventListenerObject, HandleResponse{
     removeDevice(device_id: number) {
         let json = { id: device_id };
         this.framework.request("POST", "http://localhost:8000/deviceDelete",this,json);
-        
     }
 
     drawItems(listaDisp: Array<Device>) {
@@ -100,18 +97,22 @@ class Main implements EventListenerObject, HandleResponse{
         let objEvento: HTMLElement;
         objEvento = <HTMLElement>object.target;
         
-         if (objEvento.id == "btnReload") {
+        //Handler for refresh device list
+        if (objEvento.id == "btnReload") {
             this.getAllDevices();
+        } 
 
-      
-        } else if (objEvento.id.startsWith("cb_")) {
+        // Handler for state check boxes
+        else if (objEvento.id.startsWith("cb_")) {
             let idDisp = objEvento.id.substring(3);
             
             this.updateDeviceState(parseInt(idDisp),(<HTMLInputElement>objEvento).checked ? 1 : 0);
             console.log("Dispositivo " + idDisp + " actualizado");
-       
-            
-        } else if (objEvento.id.startsWith("btnDelete_")) {
+        
+        } 
+
+        // Handler for delete item
+        else if (objEvento.id.startsWith("btnDelete_")) {
             let idDisp = objEvento.id.substring(10);
 
             if (confirm("Se desea eliminar el dispositivo " + idDisp + ". " + "Esta seguro de continuar?")) {
@@ -122,7 +123,7 @@ class Main implements EventListenerObject, HandleResponse{
                 console.log('Accion cancelada');
             }
         }
-
+        //Handler for several change buttons (gets changes on modal window)
         else if (objEvento.id.startsWith("btnChange_")) {
             let idDisp = objEvento.id.substring(10);
             let objModal = document.getElementById("addChange");
@@ -130,6 +131,7 @@ class Main implements EventListenerObject, HandleResponse{
             this.id = parseInt(idDisp);
         }
         
+        //Handler for Accept new device button
         else if(objEvento.id == "btnInsert"){
             let objModal = document.getElementById("addPopup");
             let newDevice = JSON.parse('{"id": 0, "name": " ", "description": " ", "state": 0, "type": 0}');
@@ -157,6 +159,7 @@ class Main implements EventListenerObject, HandleResponse{
             this.getAllDevices();
         }
 
+        //Handler for accept change button
         else if(objEvento.id == "btnChange"){
             let objModal = document.getElementById("addChange");
             let chgDevice = JSON.parse('{"name": " ", "description": " ", "type": 0}');
@@ -191,6 +194,7 @@ window.addEventListener("load", () => {
 
     let main: Main = new Main();
 
+    //Listeners for the buttons
     let btn = document.getElementById("btnReload");
     btn.addEventListener("click", main);
     let btnInsert = document.getElementById("btnInsert");
